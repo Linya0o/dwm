@@ -9,15 +9,16 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const Bool viewontag         = True;     /* Switch view on tag switch */
 static const char *fonts[]          = { "monospace:size=10" };
 static const char dmenufont[]       = "monospace:size=10";
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
-static const char *colors[][3]      = {
+static const char normfg[]     = "#bbbbbb";     //  #839496 #657b83
+static const char normbg[]     = "#29343d";     //  #002b36 #fdf6e3
+static const char normbor[]    = "#444444";     //  #eee8d5 #073642
+static const char selfg[]      = "#eeeeee";     //  #839496 #657b83
+static const char selbg[]      = "#3b4b58";     //  #073642 #eee8d5
+static const char selbor[]     = "#005577";     //  #eee8d5 #073642
+static const char *colors[][3] = {
 	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+	[SchemeNorm] = { normfg,    normbg,    normbor },
+	[SchemeSel]  = { selfg,     selbg,     selbor  },
 };
 
 /* tagging */
@@ -62,7 +63,7 @@ static const Layout layouts[] = {
 
 /* commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbg, "-nf", normfg, "-sb", selbg, "-sf", selfg, NULL };
 static const char *termcmd[]  = { "st", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "70x20", NULL };
