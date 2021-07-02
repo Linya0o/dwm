@@ -16,10 +16,17 @@ static const char normbor[]    = "#444444";     //  #eee8d5 #073642
 static const char selfg[]      = "#eeeeee";     //  #839496 #657b83
 static const char selbg[]      = "#3b4b58";     //  #073642 #eee8d5
 static const char selbor[]     = "#005577";     //  #eee8d5 #073642
+static const unsigned int baralpha = 0xd0;
+static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3] = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { normfg,    normbg,    normbor },
 	[SchemeSel]  = { selfg,     selbg,     selbor  },
+};
+static const unsigned int alphas[][3]      = {
+	/*               fg      bg        border     */
+	[SchemeNorm] = { OPAQUE, baralpha, borderalpha },
+	[SchemeSel]  = { OPAQUE, baralpha, borderalpha },
 };
 
 /* tagging */
