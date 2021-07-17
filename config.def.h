@@ -8,14 +8,13 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int user_bh            = 25;        /* 0 means that dwm will calculate bar height, >= 1 means dwm will user_bh as bar height */
 static const Bool viewontag         = True;     /* Switch view on tag switch */
-static const char font[]            = "monospace 10";
-static const char dmenufont[]       = "monospace:size=10";
-static const char normfg[]     = "#bbbbbb";     //  #839496 #657b83
-static const char normbg[]     = "#29343d";     //  #002b36 #fdf6e3
-static const char normbor[]    = "#444444";     //  #eee8d5 #073642
-static const char selfg[]      = "#eeeeee";     //  #839496 #657b83
-static const char selbg[]      = "#647c64";     //  #073642 #eee8d5
-static const char selbor[]     = "#005577";     //  #eee8d5 #073642
+static const char font[]            = "SauceCodePro Nerd Font 12";
+static const char normfg[]     = "#bbbbbb";
+static const char normbg[]     = "#29343d";
+static const char normbor[]    = "#444444";
+static const char selfg[]      = "#dacfa8";
+static const char selbg[]      = "#647c64";
+static const char selbor[]     = "#005577";
 static const unsigned int baralpha = 0xaa;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3] = {
@@ -35,16 +34,21 @@ static const char *const autostart[] = {
 };
 
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = {"", "", "", "", "", "", "", "", "視"};
+// static const char *tags[] = {"︁", "", "︁", "", "", "", "", "", ""};
 
 static const Rule rules[] = {
 	/* xprop(1):
 	 *	WM_CLASS(STRING) = instance, class
 	 *	WM_NAME(STRING) = title
 	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            1,           -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       0,           -1 },
+	/* class                  instance    title       tags mask     isfloating   monitor */
+	{ "Gimp",                 NULL,       NULL,       0,            1,           -1 },
+	{ "dmenu",                NULL,       NULL,       0,            1,           -1 },
+	{ "Firefox",              NULL,       NULL,       1 << 8,       0,           -1 },
+	{ "Code",                 NULL,       NULL,       1 << 1,       0,           -1 },
+	{ "Google-chrome",        NULL,       NULL,       1 << 2,       0,           -1 },
+	{ "Zathura",              NULL,       NULL,       1 << 3,       0,           -1 },
 };
 
 /* layout(s) */
@@ -72,20 +76,29 @@ static const Layout layouts[] = {
 	{ MODKEY|ControlMask|ShiftMask, KEY,      toggletag,      {.ui = 1 << TAG} },
 
 /* helper for spawning shell commands in the pre dwm-5.0 fashion */
-#define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
+#define SHCMD(cmd) { .v = (const char*[]){ "/bin/bash", "-c", cmd, NULL } }
 
 /* commands */
-static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", normbg, "-nf", normfg, "-sb", selbg, "-sf", selfg, NULL };
-static const char *termcmd[]  = { "st", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-wm", "-c", "-i", "-S", "-l", "15", NULL };
+static const char *termcmd[]  = { "st","-e", "tmux", NULL };
 static const char scratchpadname[] = "scratchpad";
 static const char *scratchpadcmd[] = { "st", "-t", scratchpadname, "-g", "70x20", NULL };
+static const char *wallpapercmd[]  = { "bash", "/home/john/.config/dwm/wp-autochange.sh", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_grave,  togglescratch,  {.v = scratchpadcmd } },
+	{ MODKEY,                       XK_w,      spawn,          {.v = wallpapercmd } },
+    { MODKEY,                       XK_b,      spawn,          SHCMD("google-chrome-stable") },
+    { MODKEY,                       XK_c,      spawn,          SHCMD("code") },
+	{ MODKEY|ShiftMask,             XK_l,      spawn,          SHCMD("slock") },
+	{ 0,             XF86XK_AudioMute,         spawn,          SHCMD("amixer -qM sset Master toggle") },
+	{ 0,             XF86XK_AudioLowerVolume,  spawn,          SHCMD("amixer -qM sset Master 5%-") },
+	{ 0,             XF86XK_AudioRaiseVolume,  spawn,          SHCMD("amixer -qM sset Master 5%+") },
+	{ 0,             XF86XK_MonBrightnessDown, spawn,          SHCMD("xbacklight -dec 10") },
+	{ 0,             XF86XK_MonBrightnessUp,   spawn,          SHCMD("xbacklight -inc 10") },
 	{ MODKEY|ShiftMask,             XK_b,      togglebar,      {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
